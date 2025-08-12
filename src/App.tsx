@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import CardSlider from "./CardSlider";
 import Navigation from "./Navigation";
 import WelcomeScreen from "./WelcomeScreen";
 import TalentOverview from "./TalentOverview";
-import TalentResults from "./TalentResults";
 import type { Question, Talent } from "./types";
 
 const talents: Talent[] = [
@@ -189,17 +188,6 @@ function App() {
 
   const handleBackToOverview = () => {
     setCurrentPage("overview");
-  };
-
-  const hasSavedResults = () => {
-    const savedResults = localStorage.getItem("ksa-talents-results");
-    try {
-      return savedResults
-        ? JSON.parse(savedResults).talents?.length > 0
-        : false;
-    } catch {
-      return false;
-    }
   };
 
   const renderCurrentPage = () => {

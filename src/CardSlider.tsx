@@ -179,8 +179,13 @@ const CardSlider: React.FC<CardSliderProps> = ({
 
   const currentQuestion = questions[currentQuestionIndex];
 
+  // Get saved results for display
+  const [displayTalents, setDisplayTalents] = useState<Talent[]>([]);
+
   // Show results if questionnaire is done or if user clicked to view saved results
   if (done || showingResults) {
+    const talentsToShow = showingResults ? displayTalents : selectedTalents;
+
     return (
       <div className="h-full overflow-y-auto">
         <div className="p-4 pb-6 max-w-lg mx-auto bg-white">
@@ -206,9 +211,9 @@ const CardSlider: React.FC<CardSliderProps> = ({
           </div>
 
           {/* Selected Talents List */}
-          {selectedTalents.length > 0 ? (
+          {talentsToShow.length > 0 ? (
             <div className="space-y-3 mb-6">
-              {selectedTalents.map((talent) => (
+              {talentsToShow.map((talent) => (
                 <div
                   key={talent.id}
                   className="p-4 rounded-lg ksa-card border border-gray-100"
@@ -254,7 +259,7 @@ const CardSlider: React.FC<CardSliderProps> = ({
           )}
 
           {/* Summary */}
-          {selectedTalents.length > 0 && (
+          {talentsToShow.length > 0 && (
             <div className="bg-blue-50 rounded-lg p-4 mb-6">
               <div className="text-center">
                 <h3
@@ -268,8 +273,8 @@ const CardSlider: React.FC<CardSliderProps> = ({
                   style={{ color: "var(--ksa-text-light)" }}
                 >
                   Je hebt{" "}
-                  <strong>{selectedTalents.length} van de 8 talenten</strong>{" "}
-                  als sterk punt geïdentificeerd
+                  <strong>{talentsToShow.length} van de 8 talenten</strong> als
+                  sterk punt geïdentificeerd
                 </p>
               </div>
             </div>
@@ -354,6 +359,7 @@ const CardSlider: React.FC<CardSliderProps> = ({
                     try {
                       const results = JSON.parse(savedResults);
                       if (results.talents && Array.isArray(results.talents)) {
+                        setDisplayTalents(results.talents);
                         setShowingResults(true);
                       }
                     } catch (error) {
